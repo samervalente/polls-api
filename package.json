@@ -2,10 +2,11 @@
   "name": "tdd-ddd-ca-solid-ts-nodejs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js", 
+  "main": "index.js",
   "scripts": {
     "build": "tsc index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +16,10 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.35.0",
+    "eslint-config-standard-with-typescript": "^34.0.0",
     "git-commit-msg-linter": "^4.7.4",
     "husky": "^8.0.3",
+    "lint-staged": "^13.1.2",
     "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "lint-staged": "^13.1.2"
   }
 }
