@@ -1,5 +1,5 @@
 
 
 function getStatus(text){
-    return text
+    return text + "hello"
 }
