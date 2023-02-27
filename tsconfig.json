@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",                                  
+    "module": "commonjs",                               
+    "outDir": "./dist",                                   
+    "esModuleInterop": true,  /*converte os módulos que utilizam require em import */                                                
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,            
+    "strict": true,                                      
+    "skipLibCheck": true                                 
+  }
+}
