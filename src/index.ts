@@ -1,5 +1,5 @@
-function test(text): string {
-  return 'ola' + text;
+function test(text: string): string {
+  return 'olaasd' + text;
 }
 
-test('mundo');
+test('ad');
