@@ -1,5 +1,5 @@
 function test(text: string): string {
-  return 'olaasdASD' + text;
+  return 'olaassaddASD' + text;
 }
 
 test('ad');
