@@ -1,4 +1,3 @@
-function test (): string {
-  return 'ola'
+function test(text): string {
+  return 'ola';
 }
-test()
