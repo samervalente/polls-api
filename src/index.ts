@@ -1,3 +1,5 @@
 function test(text): string {
-  return 'ola';
+  return 'ola' + text;
 }
+
+test('mundo');
