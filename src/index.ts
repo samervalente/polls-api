@@ -1,5 +1,5 @@
-function test(text: string): string {
-  return 'olaassaddAasdsdaasdSD' + text;
+function create(text: string): string {
+  return 'asd' + text;
 }
 
-test('ad');
+console.log(create("eita"))
