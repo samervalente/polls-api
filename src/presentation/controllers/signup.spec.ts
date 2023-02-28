@@ -6,8 +6,8 @@ describe('SignUp Controller', () => {
         const httpRequest = {
             body:{
                 email:'faker_email@mail.com',
-                password:'faker__password',
-                passwordConfirmation:'faker__password'
+                password:'faker_password',
+                passwordConfirmation:'faker_password'
             }
         }
         const httpResponse = sut.handle(httpRequest)
