@@ -1,16 +1,8 @@
-export interface IUser {
-  name: string;
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-}
+import { IHttpRequest, IHttpResponse } from "../protocols/http";
 
-export interface IHttpRequest {
-  body: IUser;
-}
 
 export class SignupController {
-  handle(httpRequest: any): any {
+  handle(httpRequest: IHttpRequest): IHttpResponse {
     if (!httpRequest.body.name) {
       return {
         statusCode: 400,
@@ -23,6 +15,11 @@ export class SignupController {
         statusCode: 400,
         body: new Error('Missing param: email')
       };
+    }
+
+    return {
+      statusCode: 200,
+      body: 'User registered successfully!'
     }
   }
 }
