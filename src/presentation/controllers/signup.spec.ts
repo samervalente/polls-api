@@ -1,17 +1,9 @@
-import { IHttpRequest, SignupController } from "./signup"
-
-
-type RecursivePartial<T> = {
-    [P in keyof T]?:
-      T[P] extends (infer U)[] ? RecursivePartial<U>[] :
-      T[P] extends object ? RecursivePartial<T[P]> :
-      T[P];
-  };
+import { SignupController } from "./signup"
 
 describe('SignUp Controller', () => {
     test('Should return 400 if no name is provided', () => {
         const sut = new SignupController()
-        const httpRequest: RecursivePartial<IHttpRequest> = {
+        const httpRequest = {
             body:{
                 email:'fake_email@mail.com',
                 password:'fake_password',
