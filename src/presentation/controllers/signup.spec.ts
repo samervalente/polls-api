@@ -2,6 +2,7 @@ import { InvalidParamError } from '../errors/invalid-param-error';
 import { MissingParamError } from '../errors/missing-param-error';
 import { EmailValidator } from '../protocols/email-validator';
 import { SignupController } from './signup';
+import { ServerError } from '../errors/server-error';
 
 interface IEnviroment {
   sut: SignupController;
@@ -110,5 +111,25 @@ describe('SignUp Controller', () => {
     };
     sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
+  });
+
+  test('Should return 500 if internal server throws exception', () => {
+    class EmailValidatorStub implements EmailValidator {
+      isValid(): boolean {
+        throw new Error();
+      }
+    }
+    const emailValidatorStub = new EmailValidatorStub();
+    const sut = new SignupController(emailValidatorStub);
+    const httpRequest = {
+      body: {
+        name: 'fake name',
+        email: 'fake_email@mail.com',
+        password: 'fake_password',
+        passwordConfirmation: 'fake_password'
+      }
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
