@@ -1,7 +1,6 @@
-import { IHttpRequest, IHttpResponse } from '../protocols/http';
+import { IHttpRequest, IHttpResponse, Controller } from '../protocols';
 import { MissingParamError, InvalidParamError } from '../errors';
-import { badRequest, internalServerError } from '../helpers/http-helper';
-import { Controller } from '../protocols/controller';
+import { badRequest, internalServerError } from '../helpers';
 import { EmailValidator } from '../protocols/email-validator';
 
 export class SignupController implements Controller {
