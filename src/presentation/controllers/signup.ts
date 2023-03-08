@@ -4,7 +4,6 @@ import { badRequest, internalServerError } from '../helpers/http-helper';
 import { Controller } from '../protocols/controller';
 import { EmailValidator } from '../protocols/email-validator';
 import { InvalidParamError } from '../errors/invalid-param-error';
-import { ServerError } from '../errors/server-error';
 
 export class SignupController implements Controller {
   private readonly emailValidator: EmailValidator;
@@ -37,7 +36,8 @@ export class SignupController implements Controller {
         body: 'User registered successfully!'
       };
     } catch (error) {
-      return internalServerError(new ServerError());
+      console.log(error);
+      return internalServerError();
     }
   }
 }

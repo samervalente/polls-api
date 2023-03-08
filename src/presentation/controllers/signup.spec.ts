@@ -113,7 +113,7 @@ describe('SignUp Controller', () => {
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
   });
 
-  test('Should return 500 if internal server throws exception', () => {
+  test('Should return 500 if EmailValidator throw new exception', () => {
     class EmailValidatorStub implements EmailValidator {
       isValid(): boolean {
         throw new Error();
