@@ -17,17 +17,7 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
-const makeEmailValidatorWithError = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(): boolean {
-      throw new Error();
-    }
-  }
-
-  return new EmailValidatorStub();
-};
-
-const makeEnviromennt = (): IEnviroment => {
+const makeTestEnviroment = (): IEnviroment => {
   const emailValidatorStub = makeEmailValidator();
   const sut = new SignupController(emailValidatorStub);
   return {
@@ -38,7 +28,7 @@ const makeEnviromennt = (): IEnviroment => {
 
 describe('SignUp Controller', () => {
   test('Should return 400 if no name is provided', () => {
-    const { sut } = makeEnviromennt();
+    const { sut } = makeTestEnviroment();
     const httpRequest = {
       body: {
         email: 'fake_email@mail.com',
@@ -52,7 +42,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Should return 400 if no email is provided', () => {
-    const { sut } = makeEnviromennt();
+    const { sut } = makeTestEnviroment();
     const httpRequest = {
       body: {
         name: 'fake name',
@@ -66,7 +56,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Should return 400 if no password is provided', () => {
-    const { sut } = makeEnviromennt();
+    const { sut } = makeTestEnviroment();
     const httpRequest = {
       body: {
         name: 'fake name',
@@ -80,7 +70,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Should return 400 if no passwordConfirmation is provided', () => {
-    const { sut } = makeEnviromennt();
+    const { sut } = makeTestEnviroment();
     const httpRequest = {
       body: {
         name: 'fake name',
@@ -96,7 +86,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Should return 400 if email is invalid', () => {
-    const { sut, emailValidatorStub } = makeEnviromennt();
+    const { sut, emailValidatorStub } = makeTestEnviroment();
     jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false);
     const httpRequest = {
       body: {
@@ -112,7 +102,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Should call EmailValidator with correct email', () => {
-    const { sut, emailValidatorStub } = makeEnviromennt();
+    const { sut, emailValidatorStub } = makeTestEnviroment();
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
     const httpRequest = {
       body: {
@@ -127,8 +117,11 @@ describe('SignUp Controller', () => {
   });
 
   test('Should return 500 if EmailValidator throw new exception', () => {
-    const emailValidatorStub = makeEmailValidatorWithError();
-    const sut = new SignupController(emailValidatorStub);
+    const { sut, emailValidatorStub } = makeTestEnviroment();
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
     const httpRequest = {
       body: {
         name: 'fake name',
