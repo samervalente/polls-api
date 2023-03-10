@@ -195,4 +195,22 @@ describe('SignUp Controller', () => {
       password: 'fake_password'
     });
   });
+
+  test('Should return 500 if addAccount throws new exception', () => {
+    const { sut, addAccountStub } = makeTestEnviroment();
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = {
+      body: {
+        name: 'fake name',
+        email: 'fake_email@mail.com',
+        password: 'fake_password',
+        passwordConfirmation: 'fake_password'
+      }
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
 });
