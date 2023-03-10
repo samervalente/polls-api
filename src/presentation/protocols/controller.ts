@@ -1,5 +1,5 @@
 import { IHttpRequest, IHttpResponse } from './http';
 
 export abstract class Controller {
-  abstract handle(httpRequest: IHttpRequest): IHttpResponse;
+  abstract handle(httpRequest: IHttpRequest): Promise<IHttpResponse>;
 }
