@@ -6,7 +6,7 @@ import {
   EmailValidator
 } from './signup-protocol';
 import { MissingParamError, InvalidParamError } from '../../errors';
-import { badRequest, internalServerError } from '../../helpers';
+import { badRequest, internalServerError, created } from '../../helpers';
 
 export class SignupController implements Controller {
   private readonly emailValidator: EmailValidator;
@@ -42,16 +42,13 @@ export class SignupController implements Controller {
         return badRequest(new InvalidParamError('passwordConfirmation'));
       }
 
-      const addedAccount = this.addAccount.add({
+      const account = this.addAccount.add({
         name,
         email,
         password
       });
 
-      return {
-        statusCode: 200,
-        body: addedAccount
-      };
+      return created(account);
     } catch (error) {
       return internalServerError();
     }

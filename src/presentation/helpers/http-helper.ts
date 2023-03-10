@@ -10,3 +10,8 @@ export const internalServerError = (): IHttpResponse => ({
   statusCode: 500,
   body: new ServerError()
 });
+
+export const created = (data: any): IHttpResponse => ({
+  statusCode: 201,
+  body: data
+});
