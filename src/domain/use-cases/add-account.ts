@@ -1,4 +1,4 @@
-import { Account } from '../entities/account';
+import { Account } from '../../entities/account';
 import { AccountModel } from '../models/account';
 
 export abstract class AddAccount {

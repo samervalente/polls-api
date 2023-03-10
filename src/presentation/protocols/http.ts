@@ -4,7 +4,7 @@ export interface IHttpResponse {
 }
 
 export interface IHttpRequest {
-  body?: any;
+  body: any;
 }
 
 export interface IUser {

@@ -1,9 +1,10 @@
-import { SignupController } from './signup';
-import { InvalidParamError, MissingParamError, ServerError } from '../errors';
-import { EmailValidator } from '../protocols';
-import { AddAccount } from '../../domain/use-cases/add-account';
-import { AccountModel } from '../../domain/models/account';
-import { Account } from '../../domain/entities/account';
+import { SignupController } from '../signup/signup';
+import {
+  InvalidParamError,
+  MissingParamError,
+  ServerError
+} from '../../errors';
+import { EmailValidator, AddAccount, Account } from './signup-protocol';
 import { randomUUID } from 'crypto';
 
 const makeEmailValidator = (): EmailValidator => {
