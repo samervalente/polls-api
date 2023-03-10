@@ -5,7 +5,6 @@ import {
   ServerError
 } from '../../errors';
 import { EmailValidator, AddAccount, Account } from './signup-protocol';
-import { randomUUID } from 'crypto';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -21,10 +20,10 @@ const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     add(): Account {
       return {
-        id: randomUUID(),
-        name: 'Samer',
+        id: 'valid_id',
+        name: 'fake name',
         email: 'fake_email@mail.com',
-        password: '123'
+        password: 'fake_password'
       };
     }
   }
@@ -212,5 +211,26 @@ describe('SignUp Controller', () => {
     };
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  test('Should return 200 if a valid account data is provided', () => {
+    const { sut } = makeTestEnviroment();
+    const httpRequest = {
+      body: {
+        name: 'fake name',
+        email: 'fake_email@mail.com',
+        password: 'fake_password',
+        passwordConfirmation: 'fake_password'
+      }
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: 'fake name',
+      email: 'fake_email@mail.com',
+      password: 'fake_password'
+    });
+    expect(httpResponse.body.id).toBeDefined();
   });
 });
