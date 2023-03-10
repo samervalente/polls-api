@@ -213,7 +213,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  test('Should return 200 if a valid account data is provided', () => {
+  test('Should return 201 if a valid account data is provided', () => {
     const { sut } = makeTestEnviroment();
     const httpRequest = {
       body: {
@@ -224,7 +224,7 @@ describe('SignUp Controller', () => {
       }
     };
     const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.statusCode).toBe(201);
     expect(httpResponse.body).toEqual({
       id: 'valid_id',
       name: 'fake name',
