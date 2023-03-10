@@ -1,11 +1,10 @@
 import { SignupController } from './signup';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
 import { EmailValidator } from '../protocols';
-
-interface IEnviroment {
-  sut: SignupController;
-  emailValidatorStub: EmailValidator;
-}
+import { AddAccount } from '../../domain/use-cases/add-account';
+import { AccountModel } from '../../domain/models/account';
+import { Account } from '../../domain/entities/account';
+import { randomUUID } from 'crypto';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -17,12 +16,36 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    add(): Account {
+      return {
+        id: randomUUID(),
+        name: 'Samer',
+        email: 'fake_email@mail.com',
+        password: '123'
+      };
+    }
+  }
+
+  return new AddAccountStub();
+};
+
+interface IEnviroment {
+  sut: SignupController;
+  emailValidatorStub: EmailValidator;
+  addAccountStub: AddAccount;
+}
+
 const makeTestEnviroment = (): IEnviroment => {
   const emailValidatorStub = makeEmailValidator();
-  const sut = new SignupController(emailValidatorStub);
+  const addAccountStub = makeAddAccount();
+  const sut = new SignupController(emailValidatorStub, addAccountStub);
+
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   };
 };
 
@@ -149,5 +172,26 @@ describe('SignUp Controller', () => {
     };
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  test('Should call addAccount use-case with correct values', () => {
+    const { sut, addAccountStub } = makeTestEnviroment();
+    const isValidAddAccountSpy = jest.spyOn(addAccountStub, 'add');
+
+    const httpRequest = {
+      body: {
+        name: 'fake name',
+        email: 'fake_email@mail.com',
+        password: 'fake_password',
+        passwordConfirmation: 'fake_password'
+      }
+    };
+    sut.handle(httpRequest);
+
+    expect(isValidAddAccountSpy).toHaveBeenCalledWith({
+      name: 'fake name',
+      email: 'fake_email@mail.com',
+      password: 'fake_password'
+    });
   });
 });
