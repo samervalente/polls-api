@@ -1,23 +1,25 @@
 import { Encrypter } from './db-add-account-protocols';
 import { DBAddAccount } from './db-add-account';
+import { AddAccountRepository } from '@/data/protocols/add-account-repository';
+import {
+  makeAddAccountRepository,
+  makeEncrypter
+} from './db-add-account-factorie';
 
 interface ITestEnviroment {
   sut: DBAddAccount;
   encrypterStub: Encrypter;
+  addAccountRepositoryStub: AddAccountRepository;
 }
 
 const makeTestEnvironment = (): ITestEnviroment => {
-  class EncrypterStub implements Encrypter {
-    async encrypt(): Promise<string> {
-      return new Promise((resolve) => resolve('hashed_password'));
-    }
-  }
-
-  const encrypterStub = new EncrypterStub();
-  const sut = new DBAddAccount(encrypterStub);
+  const encrypterStub = makeEncrypter();
+  const addAccountRepositoryStub = makeAddAccountRepository();
+  const sut = new DBAddAccount(encrypterStub, addAccountRepositoryStub);
   return {
     sut,
-    encrypterStub
+    encrypterStub,
+    addAccountRepositoryStub
   };
 };
 
@@ -50,5 +52,21 @@ describe('Tests for DBAddAccount usecase', () => {
     };
     const promise = sut.add(accountData);
     expect(promise).rejects.toThrow();
+  });
+
+  test('Should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeTestEnvironment();
+
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add');
+    const accountData = {
+      name: 'valid_fake_name',
+      email: 'valid_fake_mail@gmail.com',
+      password: 'valid_fake_password'
+    };
+    await sut.add(accountData);
+    expect(addSpy).toHaveBeenCalledWith({
+      ...accountData,
+      password: 'hashed_password'
+    });
   });
 });
