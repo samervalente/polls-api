@@ -69,4 +69,21 @@ describe('Tests for DBAddAccount usecase', () => {
       password: 'hashed_password'
     });
   });
+
+  test('Should throw if encrypter throws', async () => {
+    const { sut, addAccountRepositoryStub } = makeTestEnvironment();
+
+    jest
+      .spyOn(addAccountRepositoryStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+    const accountData = {
+      name: 'valid_fake_name',
+      email: 'valid_fake_mail@gmail.com',
+      password: 'valid_fake_password'
+    };
+    const promise = sut.add(accountData);
+    expect(promise).rejects.toThrow();
+  });
 });
