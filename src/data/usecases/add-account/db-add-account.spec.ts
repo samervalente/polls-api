@@ -8,7 +8,7 @@ interface ITestEnviroment {
 }
 
 const makeTestEnvironment = (): ITestEnviroment => {
-  class EncrypterStub {
+  class EncrypterStub implements Encrypter {
     async encrypt(value: string): Promise<string> {
       return new Promise((resolve) => resolve('hashed_password'));
     }
@@ -34,5 +34,22 @@ describe('Tests for DBAddAccount usecase', () => {
     };
     await sut.add(accountData);
     expect(encryptSpy).toHaveBeenCalledWith(accountData.password);
+  });
+
+  test('Should throw if encrypter throws', async () => {
+    const { sut, encrypterStub } = makeTestEnvironment();
+
+    jest
+      .spyOn(encrypterStub, 'encrypt')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      );
+    const accountData = {
+      name: 'valid_fake_name',
+      email: 'valid_fake_mail@gmail.com',
+      password: 'valid_fake_password'
+    };
+    const promise = sut.add(accountData);
+    expect(promise).rejects.toThrow();
   });
 });
