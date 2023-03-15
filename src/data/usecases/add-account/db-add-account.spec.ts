@@ -86,4 +86,20 @@ describe('Tests for DBAddAccount usecase', () => {
     const promise = sut.add(accountData);
     expect(promise).rejects.toThrow();
   });
+
+  test('Should return a valid account', async () => {
+    const { sut } = makeTestEnvironment();
+
+    const accountData = {
+      name: 'valid_fake_name',
+      email: 'valid_fake_mail@gmail.com',
+      password: 'valid_fake_password'
+    };
+    const createdAccount = await sut.add(accountData);
+    expect(createdAccount).toEqual({
+      id: 'valid_id',
+      ...accountData,
+      password: 'hashed_password'
+    });
+  });
 });
