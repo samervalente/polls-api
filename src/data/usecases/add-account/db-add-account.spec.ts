@@ -1,15 +1,14 @@
-import { Encrypter } from '@/data/protocols/encrypter';
-import { AddAccount } from '@/domain/use-cases/add-account';
+import { Encrypter } from './db-add-account-protocols';
 import { DBAddAccount } from './db-add-account';
 
 interface ITestEnviroment {
-  sut: AddAccount;
+  sut: DBAddAccount;
   encrypterStub: Encrypter;
 }
 
 const makeTestEnvironment = (): ITestEnviroment => {
   class EncrypterStub implements Encrypter {
-    async encrypt(value: string): Promise<string> {
+    async encrypt(): Promise<string> {
       return new Promise((resolve) => resolve('hashed_password'));
     }
   }
