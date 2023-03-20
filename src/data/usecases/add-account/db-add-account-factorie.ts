@@ -4,7 +4,7 @@ import { Account, Encrypter } from './db-add-account-protocols';
 export const makeEncrypter = () => {
   class EncrypterStub implements Encrypter {
     async encrypt(): Promise<string> {
-      return new Promise((resolve) => resolve('hashed_password'));
+      return Promise.resolve('hashed_password');
     }
   }
 
@@ -14,14 +14,12 @@ export const makeEncrypter = () => {
 export const makeAddAccountRepository = () => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add(): Promise<Account> {
-      return new Promise((resolve) =>
-        resolve({
-          id: 'valid_id',
-          name: 'valid_fake_name',
-          email: 'valid_fake_mail@gmail.com',
-          password: 'hashed_password'
-        })
-      );
+      return Promise.resolve({
+        id: 'valid_id',
+        name: 'valid_fake_name',
+        email: 'valid_fake_mail@gmail.com',
+        password: 'hashed_password'
+      });
     }
   }
 

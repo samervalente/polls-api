@@ -42,9 +42,7 @@ describe('Tests for DBAddAccount usecase', () => {
 
     jest
       .spyOn(encrypterStub, 'encrypt')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+      .mockReturnValueOnce(Promise.reject(new Error()));
     const accountData = {
       name: 'valid_fake_name',
       email: 'valid_fake_mail@gmail.com',
@@ -75,9 +73,7 @@ describe('Tests for DBAddAccount usecase', () => {
 
     jest
       .spyOn(addAccountRepositoryStub, 'add')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error()))
-      );
+      .mockReturnValueOnce(Promise.reject(new Error()));
     const accountData = {
       name: 'valid_fake_name',
       email: 'valid_fake_mail@gmail.com',
