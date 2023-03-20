@@ -1,7 +1,6 @@
 import { AddAccountRepository } from '@/data/protocols/add-account-repository';
 import { Account, Encrypter } from './db-add-account-protocols';
 
-
 export const makeEncrypter = () => {
   class EncrypterStub implements Encrypter {
     async encrypt(): Promise<string> {

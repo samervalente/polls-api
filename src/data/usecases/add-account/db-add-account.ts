@@ -22,11 +22,6 @@ export class DBAddAccount implements AddAccount {
       Object.assign({}, account, { password: hashedPassword })
     );
 
-    //or
-    // await this.addAccountRepository.add({
-    //   ...account,
-    //   password: hashedPassword
-    // });
     return createdAccount;
   }
 }
