@@ -12,5 +12,10 @@ export const MongoHelper = {
   },
   getCollection(name: string): Collection {
     return this.client.db().collection(name);
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  map(doc: any): any {
+    const { _id, ...rest } = doc;
+    return { id: String(_id), ...rest };
   }
 };
